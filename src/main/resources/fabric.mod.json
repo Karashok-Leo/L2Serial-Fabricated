@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "l2serial",
+  "version": "${version}",
+  "name": "L2 Serial",
+  "description": "L2 Serial",
+  "authors": [
+    "Karashok-Leo"
+  ],
+  "contact": {
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "GPLv3",
+  "icon": "assets/l2serial/icon.png",
+  "environment": "*",
+  "depends": {
+    "fabricloader": ">=0.15.7",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}
