@@ -1,6 +1,5 @@
 plugins {
 	id 'fabric-loom' version '1.5-SNAPSHOT'
-	id "com.modrinth.minotaur" version "2.+"
 	id 'maven-publish'
 }
 
@@ -43,19 +42,6 @@ java {
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}"}
-	}
-}
-
-modrinth {
-	token = System.getenv("MODRINTH_TOKEN")
-	projectId = ""
-	versionNumber = mod_version
-	versionType = "beta"
-	uploadFile = remapJar
-	gameVersions = ["1.20.1"]
-	loaders = ["fabric"]
-	dependencies {
-		required.project "fabric-api"
 	}
 }
 

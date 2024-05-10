@@ -10,7 +10,7 @@
   "contact": {
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "license": "GPLv3",
+  "license": "LGPLv2.1",
   "icon": "assets/l2serial/icon.png",
   "environment": "*",
   "depends": {

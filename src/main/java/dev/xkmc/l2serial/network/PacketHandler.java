@@ -1,11 +1,12 @@
 package dev.xkmc.l2serial.network;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class PacketHandler
@@ -26,7 +27,10 @@ public class PacketHandler
     @SuppressWarnings("unchecked")
     public <T extends SimplePacketBase> PacketType<BasePayload<T>> getPacketType(Class<T> cls)
     {
-        return Objects.requireNonNull((PacketType<BasePayload<T>>) map.get(cls));
+        var type = map.get(cls);
+        if (type == null)
+            throw new IllegalStateException("PacketType for Class<" + cls.getName() + "> doesn't exist, call PacketHandler.configure(Class<? extends SimplePacketBase> type) to configure it.");
+        return (PacketType<BasePayload<T>>) type;
     }
 
     public void configure(Class<? extends SimplePacketBase> type)
@@ -39,6 +43,30 @@ public class PacketHandler
     {
         for (Class<? extends SimplePacketBase> type : types)
             configure(type);
+    }
+
+    public void configureS2C(Class<? extends SerialPacketS2C> type)
+    {
+        ClientPlayNetworking.registerGlobalReceiver(this.getPacketType(type), (packet, player, responseSender) -> packet.packet().handle(player));
+    }
+
+    @SafeVarargs
+    public final void configureS2C(Class<? extends SerialPacketS2C>... types)
+    {
+        for (Class<? extends SerialPacketS2C> type : types)
+            configureS2C(type);
+    }
+
+    public void configureC2S(Class<? extends SerialPacketC2S> type)
+    {
+        ServerPlayNetworking.registerGlobalReceiver(this.getPacketType(type), (packet, player, responseSender) -> packet.packet().handle(player));
+    }
+
+    @SafeVarargs
+    public final void configureC2S(Class<? extends SerialPacketC2S>... types)
+    {
+        for (Class<? extends SerialPacketC2S> type : types)
+            configureC2S(type);
     }
 
     private Identifier of(Class<? extends SimplePacketBase> cls)
