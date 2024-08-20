@@ -1,5 +1,7 @@
 package dev.xkmc.l2serial.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -45,11 +47,13 @@ public class PacketHandler
             configure(type);
     }
 
+    @Environment(EnvType.CLIENT)
     public void configureS2C(Class<? extends SerialPacketS2C> type)
     {
         ClientPlayNetworking.registerGlobalReceiver(this.getPacketType(type), (packet, player, responseSender) -> packet.packet().handle(player));
     }
 
+    @Environment(EnvType.CLIENT)
     @SafeVarargs
     public final void configureS2C(Class<? extends SerialPacketS2C>... types)
     {
