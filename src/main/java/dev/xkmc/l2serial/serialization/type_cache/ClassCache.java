@@ -66,4 +66,10 @@ public class ClassCache
     {
         return methods.get();
     }
+
+    @Override
+    public String toString()
+    {
+        return "ClassCache{" + cls + '}';
+    }
 }

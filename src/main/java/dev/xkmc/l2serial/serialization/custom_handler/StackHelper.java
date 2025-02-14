@@ -2,11 +2,9 @@ package dev.xkmc.l2serial.serialization.custom_handler;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Util;
 
 public class StackHelper
@@ -26,7 +24,7 @@ public class StackHelper
      */
     public static JsonElement serializeFabricItemStack(ItemStack stack)
     {
-        return Util.getResult(ItemStack.CODEC.encodeStart(JsonOps.INSTANCE,stack), IllegalStateException::new);
+        return Util.getResult(ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack), IllegalStateException::new);
 //        JsonObject ans = new JsonObject();
 //        ans.addProperty("id", Registries.ITEM.getId(stack.getItem()).toString());
 //        ans.addProperty("Count", stack.getCount());

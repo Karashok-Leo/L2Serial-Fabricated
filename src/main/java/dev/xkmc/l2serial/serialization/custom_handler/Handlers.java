@@ -22,6 +22,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -151,6 +152,15 @@ public class Handlers
 //                f -> f.writeToNBT(new NbtCompound())
 //        );
 
+        new ClassHandler<>(
+                Text.class,
+                TextHelper::serializeText,
+                TextHelper::deserializeText,
+                PacketByteBuf::readText,
+                PacketByteBuf::writeText,
+                TextHelper::textFromNbt,
+                TextHelper::textToNbt
+        );
         new StringClassHandler<>(
                 Identifier.class,
                 Identifier::new,
@@ -276,6 +286,7 @@ public class Handlers
     {
         new SimpleNullDefer<>(ItemStack.class, ItemStack.EMPTY);
         new SimpleNullDefer<>(Ingredient.class, Ingredient.EMPTY);
+        new SimpleNullDefer<>(Text.class, Text.empty());
         new PrimitiveNullDefer<>(Integer.class, 0);
         new PrimitiveNullDefer<>(int.class, 0);
         new PrimitiveNullDefer<>(Long.class, 0L);
@@ -321,7 +332,7 @@ public class Handlers
     public static <T> void enable(Class<T> cls, Supplier<Registry<T>> reg)
     {
         if (VANILLA_SYNC_REGISTRIES.contains(reg.get()) &&
-                reg.get() instanceof SimpleRegistry<T> mapped)
+            reg.get() instanceof SimpleRegistry<T> mapped)
             new RLClassHandler<>(cls, mapped);
         else
             new StringRLClassHandler<>(cls, reg);

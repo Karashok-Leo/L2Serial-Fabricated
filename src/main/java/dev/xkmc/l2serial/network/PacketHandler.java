@@ -37,7 +37,12 @@ public class PacketHandler
 
     public void configure(Class<? extends SimplePacketBase> type)
     {
-        map.put(type, PacketType.create(of(type), buf -> getPacket(SerialPacketBase.serial(type, buf))));
+        configure(type, PacketType.create(of(type), buf -> getPacket(SerialPacketBase.serial(type, buf))));
+    }
+
+    public void configure(Class<? extends SimplePacketBase> type, PacketType<BasePayload<?>> packetType)
+    {
+        map.put(type, packetType);
     }
 
     @SafeVarargs
